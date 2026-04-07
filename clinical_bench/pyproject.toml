@@ -23,6 +23,12 @@ dependencies = [
     "scikit-learn>=1.5.0",
 ]
 
+<<<<<<< HEAD
+=======
+[project.scripts]
+clinical-bench-server = "clinical_bench.server.app:main"
+
+>>>>>>> cb1baf0 (fix)
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["clinical_bench*"]

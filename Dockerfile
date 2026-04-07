@@ -7,10 +7,15 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         build-essential \
         curl \
+<<<<<<< HEAD
         libhts-dev \
         libbz2-dev \
         liblzma-dev \
         libcurl4-openssl-dev && \
+=======
+        libbz2-dev \
+        liblzma-dev && \
+>>>>>>> cb1baf0 (fix)
     rm -rf /var/lib/apt/lists/*
 
 # ------------------------------------------------------------------
@@ -52,8 +57,12 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
 # ------------------------------------------------------------------
 EXPOSE 8080
 
+<<<<<<< HEAD
 CMD uvicorn clinical_bench.server.app:app \
     --host 0.0.0.0 \
     --port ${PORT} \
     --workers 1 \
     --timeout-keep-alive 75
+=======
+CMD ["uvicorn", "clinical_bench.server.app:app", "--host", "0.0.0.0", "--port", "8080", "--workers", "1", "--timeout-keep-alive", "75"]
+>>>>>>> cb1baf0 (fix)

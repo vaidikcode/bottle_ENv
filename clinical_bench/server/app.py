@@ -25,3 +25,17 @@ app = create_app(
     env_name="clinical_bench",
     max_concurrent_envs=4,
 )
+<<<<<<< HEAD
+=======
+
+
+def main():
+    """Entry point for running the server directly."""
+    import uvicorn
+    port = int(os.getenv("PORT", "8080"))
+    uvicorn.run(app, host="0.0.0.0", port=port)
+
+
+if __name__ == "__main__":
+    main()
+>>>>>>> cb1baf0 (fix)

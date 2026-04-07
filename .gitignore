@@ -49,3 +49,20 @@ Thumbs.db
 *.log
 workdir/
 tmp/
+<<<<<<< HEAD
+=======
+
+# Results (keep structure but ignore specific result files)
+results/*.log
+!results/.gitkeep
+
+# Generated docs
+docs/*.png
+docs/*.pdf
+!docs/.gitkeep
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+>>>>>>> cb1baf0 (fix)

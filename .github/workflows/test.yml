@@ -1,0 +1,82 @@
+name: Test ClinicalBench
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest mypy ruff
+    
+    - name: Lint with ruff
+      run: |
+        ruff check clinical_bench/ --select E,F,W
+      continue-on-error: true
+    
+    - name: Type check with mypy
+      run: |
+        mypy clinical_bench/ --ignore-missing-imports
+      continue-on-error: true
+    
+    - name: Run unit tests
+      run: |
+        pytest tests/ -v --tb=short
+    
+    - name: Validate OpenEnv spec
+      run: |
+        pip install openenv-core
+        openenv validate clinical_bench
+      continue-on-error: true
+    
+    - name: Build Docker image
+      run: |
+        docker build -t clinical-bench:test .
+    
+    - name: Test Docker container
+      run: |
+        docker run -d -p 8080:8080 --name test-container clinical-bench:test
+        sleep 15
+        curl -f http://localhost:8080/health || (docker logs test-container && exit 1)
+        docker stop test-container
+        docker rm test-container
+    
+    - name: Check inference script
+      run: |
+        python -c "import inference; print('✅ Inference script imports successfully')"
+      continue-on-error: true
+
+  docs:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Check README
+      run: |
+        grep -q "OpenEnv" README.md || exit 1
+        grep -q "clinical_calc" clinical_bench/README.md || exit 1
+        echo "✅ README files are present and contain expected content"
+    
+    - name: Check LICENSE
+      run: |
+        test -f LICENSE || exit 1
+        grep -q "Apache License" LICENSE || exit 1
+        echo "✅ LICENSE file is present"

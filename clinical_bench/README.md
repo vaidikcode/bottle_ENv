@@ -1,5 +1,35 @@
+<<<<<<< HEAD
 # ClinicalBench
 
+=======
+---
+title: ClinicalBench - Medical Code Generation Environment
+emoji: "🏥"
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+app_port: 8080
+base_path: /web
+tags:
+  - openenv
+  - medical
+  - bioinformatics
+  - code-generation
+  - clinical-ai
+  - biomedical
+  - python
+license: apache-2.0
+---
+
+# ClinicalBench
+
+[![OpenEnv](https://img.shields.io/badge/OpenEnv-compliant-blue)](https://github.com/meta-pytorch/OpenEnv)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](../LICENSE)
+[![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org)
+[![Docker](https://img.shields.io/badge/docker-ready-green)](https://hub.docker.com)
+
+>>>>>>> cb1baf0 (fix)
 **ClinicalBench** is an [OpenEnv](https://github.com/meta-pytorch/OpenEnv)-compliant RL environment for biomedical code-generation tasks.
 
 An AI agent receives a natural-language biomedical problem and iteratively submits Python code. The environment executes the code in a sandbox and returns graded feedback. The agent can retry up to 8 times per episode, receiving partial-credit rewards at every step.
@@ -254,6 +284,237 @@ step(ClinicalAction(code="..."))
 
 ---
 
+<<<<<<< HEAD
+=======
+## Example Episode Walkthrough
+
+### Clinical Calculator: Creatinine Clearance
+
+**Problem:** Calculate Creatinine Clearance for a 68-year-old male patient.
+
+#### Step 1: Episode Start
+
+```python
+result = env.reset(task_name="clinical_calc", task_index=42)
+print(result.observation.task_description)
+```
+
+**Observation:**
+```
+Patient Note: 68-year-old male, weight 82 kg, serum creatinine 1.2 mg/dL.
+Question: Calculate the Creatinine Clearance (Cockcroft-Gault formula).
+```
+
+**Metadata:**
+- Reward: 0.0
+- Done: False
+- Step: 0/8
+
+---
+
+#### Step 2: First Attempt (Syntax Error)
+
+**Agent submits:**
+```python
+weight = 82
+age = 68
+creatinine 1.2  # ❌ Missing = operator
+cc = ((140 - age) * weight) / (72 * creatinine)
+print(cc)
+```
+
+**Observation:**
+- Execution result: `""`
+- Error: `"SyntaxError on line 3: invalid syntax"`
+- **Reward: 0.1** (syntax error penalty)
+- Done: False
+
+**Agent learns:** Code must be syntactically correct.
+
+---
+
+#### Step 3: Second Attempt (Wrong Formula)
+
+**Agent submits:**
+```python
+weight = 82
+age = 68
+creatinine = 1.2
+cc = weight / creatinine  # ❌ Incomplete formula
+print(cc)
+```
+
+**Observation:**
+- Execution result: `"68.33"`
+- Error: `None`
+- **Reward: 0.3** (code runs but wrong answer)
+- Done: False
+
+**Agent learns:** Output produced, but numerically incorrect.
+
+---
+
+#### Step 4: Third Attempt (Correct!)
+
+**Agent submits:**
+```python
+weight = 82
+age = 68
+creatinine = 1.2
+# Cockcroft-Gault: ((140 - age) * weight) / (72 * creatinine)
+cc = ((140 - age) * weight) / (72 * creatinine)
+print(round(cc, 1))
+```
+
+**Observation:**
+- Execution result: `"68.3"`
+- Error: `None`
+- **Reward: 1.0** ✅ (within tolerance [67.8, 68.8])
+- **Done: True** (solved!)
+
+**Episode complete:** Total steps = 3, Final score = 1.0
+
+---
+
+## Architecture
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│                        AGENT (LLM / RL)                      │
+│               Receives problem → Generates code              │
+└────────────────┬─────────────────────────────────────────────┘
+                 │
+                 │ Action: ClinicalAction(code="...")
+                 ▼
+┌──────────────────────────────────────────────────────────────┐
+│              ClinicalBenchEnvironment                        │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  1. Validate Action                                    │  │
+│  │     └─> Check code syntax (AST parse)                  │  │
+│  │                                                         │  │
+│  │  2. Sandbox Execute (30s timeout)                      │  │
+│  │     ├─> Isolated subprocess                            │  │
+│  │     ├─> Clean environment (no credential leaks)        │  │
+│  │     └─> Capture stdout, stderr                         │  │
+│  │                                                         │  │
+│  │  3. Grade Output (task-specific)                       │  │
+│  │     ├─ ClinicalCalc: Numeric tolerance                 │  │
+│  │     │   └─> [lower, upper] range matching              │  │
+│  │     ├─ BiostatPower: Percentage match                  │  │
+│  │     │   └─> ±1% exact, ±10% partial                    │  │
+│  │     └─ BioCoder: Token overlap                         │  │
+│  │         └─> 100% match or ≥80% Jaccard                 │  │
+│  │                                                         │  │
+│  │  4. Apply Reward Shaping                               │  │
+│  │     ├─> Partial credit: 0.0 / 0.1 / 0.3 / 0.5 / 1.0    │  │
+│  │     └─> Consecutive-failure penalty (−0.1 after 3)     │  │
+│  │                                                         │  │
+│  │  5. Build Observation                                  │  │
+│  │     └─> Package result, reward, done, metadata         │  │
+│  └────────────────────────────────────────────────────────┘  │
+└────────────────┬─────────────────────────────────────────────┘
+                 │
+                 │ Observation: ClinicalObservation(...)
+                 ▼
+┌──────────────────────────────────────────────────────────────┐
+│                        AGENT (LLM / RL)                      │
+│         Learns from feedback → Improves next attempt         │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Troubleshooting
+
+### Server Issues
+
+**Error:** `FileNotFoundError: data/medcalcbench/test_tasks.jsonl`
+
+**Solution:** Set the `DATA_PATH` environment variable:
+```bash
+export DATA_PATH=./clinical_bench/data
+uvicorn clinical_bench.server.app:app --port 8080
+```
+
+---
+
+**Error:** `ModuleNotFoundError: No module named 'clinical_bench'`
+
+**Solution:** Install the package in development mode:
+```bash
+pip install -e .
+```
+
+---
+
+### Inference Script Issues
+
+**Error:** `openai.AuthenticationError: Invalid API key`
+
+**Solution:** Set your API credentials:
+```bash
+export HF_TOKEN=your_huggingface_token
+# OR
+export OPENAI_API_KEY=your_openai_key
+```
+
+---
+
+**Error:** Inference script times out or gets very low scores
+
+**Expected behavior:** With `Qwen/Qwen2.5-72B-Instruct`:
+- **Clinical Calc (Easy):** ~0.65 average, ~55% solve rate
+- **Biostat Power (Medium):** ~0.45 average, ~33% solve rate
+- **BioCoder (Hard):** ~0.20 average, ~10% solve rate
+
+If scores are much lower, check:
+1. Model has enough context window (≥4K tokens)
+2. Temperature isn't too high (recommended: 0.7)
+3. Max tokens allows full code generation (≥512 tokens)
+
+---
+
+### Docker Issues
+
+**Error:** Docker build fails with package installation errors
+
+**Solution:** Increase Docker memory limit:
+```bash
+# Docker Desktop: Settings → Resources → Memory → 4GB+
+```
+
+---
+
+**Error:** Container exits immediately after starting
+
+**Solution:** Check logs for the actual error:
+```bash
+docker logs <container_id>
+```
+
+Common causes:
+- Missing `DATA_PATH` env var in container
+- Port 8080 already in use (change with `-p 8081:8080`)
+
+---
+
+### Validation Issues
+
+**Error:** `openenv validate` fails
+
+**Solution:** Ensure you have the latest openenv-core:
+```bash
+pip install --upgrade openenv-core
+```
+
+If validation still fails, check:
+1. `openenv.yaml` is valid YAML syntax
+2. All required fields are present in models
+3. Server implements `reset()`, `step()`, `state` correctly
+
+---
+
+>>>>>>> cb1baf0 (fix)
 ## License
 
 Apache 2.0. See [LICENSE](../LICENSE) for details.
