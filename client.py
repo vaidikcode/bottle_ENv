@@ -52,10 +52,12 @@ class ClinicalBenchClient(EnvClient[ClinicalAction, ClinicalObservation, Clinica
     def _parse_result(self, payload: dict) -> StepResult[ClinicalObservation]:
         obs_data = payload.get("observation", payload)
         obs = ClinicalObservation(**obs_data)
+        # reward and done live at the top level of the payload, not inside the
+        # observation dict — read them from there so scores are reported correctly.
         return StepResult(
             observation=obs,
-            reward=float(obs.reward) if obs.reward is not None else 0.0,
-            done=bool(obs.done),
+            reward=float(payload.get("reward") or 0.0),
+            done=bool(payload.get("done", obs.done)),
         )
 
     def _parse_state(self, payload: dict) -> ClinicalState:

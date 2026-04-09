@@ -147,7 +147,11 @@ class ClinicalBenchEnvironment(Environment[ClinicalAction, ClinicalObservation, 
     ) -> ClinicalObservation:
         """Execute the submitted code and return a graded observation."""
         if self._done:
-            raise RuntimeError("Episode is over. Call reset() first.")
+            # The openenv-core HTTP server creates a fresh environment for each
+            # stateless /step request (without calling reset first).  Auto-reset
+            # so the HTTP endpoint works; WebSocket-based clients always call
+            # reset() explicitly before stepping and are unaffected.
+            self.reset()
 
         self._step_count += 1
         task = self._tasks[self._task_name]
