@@ -63,7 +63,7 @@ def main() -> None:
     """Entry point for `uv run server` / `clinical-bench-server` (openenv validate)."""
     import uvicorn
 
-    port = int(os.getenv("PORT", "8080"))
+    port = int(os.getenv("PORT", "7860"))
     uvicorn.run(
         "server.app:app",
         host="0.0.0.0",

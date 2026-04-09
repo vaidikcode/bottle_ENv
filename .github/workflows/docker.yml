@@ -15,4 +15,4 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build image (repo root context)
-        run: docker build -f clinical_bench/Dockerfile -t clinical-bench:ci .
+        run: docker build -t clinical-bench:ci .

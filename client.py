@@ -7,7 +7,7 @@ Usage (async):
     from server.models import ClinicalAction
 
     async def main():
-        async with ClinicalBenchClient(base_url="ws://localhost:8080") as env:
+        async with ClinicalBenchClient(base_url="ws://localhost:7860") as env:
             result = await env.reset(task_name="clinical_calc", task_index=0)
             print(result.observation.task_description)
             result = await env.step(ClinicalAction(code="answer = 42\\nprint(answer)"))
@@ -16,7 +16,7 @@ Usage (async):
     asyncio.run(main())
 
 Usage (sync):
-    env = ClinicalBenchClient(base_url="ws://localhost:8080").sync()
+    env = ClinicalBenchClient(base_url="ws://localhost:7860").sync()
     with env:
         result = env.reset(task_name="biostat_power")
         result = env.step(ClinicalAction(code="print(0.95)"))

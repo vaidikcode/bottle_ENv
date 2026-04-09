@@ -16,7 +16,7 @@ tags:
 server:
   module: server.app
   app: app
-  port: 8080
+  port: 7860
 
 action:
   type: object

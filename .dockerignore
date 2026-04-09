@@ -1,0 +1,56 @@
+# Version control
+.git/
+.gitignore
+.gitattributes
+
+# Python virtual environments (Windows .pyd files won't work in Linux containers)
+.venv/
+.venv312/
+venv/
+env/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+
+# Frontend dependencies (Docker installs these via npm ci)
+frontend/node_modules/
+node_modules/
+
+# Pre-built frontend (Docker builds this from source via multi-stage)
+frontend/dist/
+
+# Secrets / local config
+.env
+*.env
+credentials.toml
+*.toml.local
+
+# Tooling
+.claude/
+.github/
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs / temp
+*.log
+workdir/
+tmp/
+
+# Validation scripts (not needed in image)
+validate-submission.ps1
+scripts/
+
+# CI lock file (Docker uses requirements.txt)
+uv.lock

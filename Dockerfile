@@ -52,7 +52,7 @@ COPY --from=frontend-build /app/frontend/dist /app/frontend/dist
 ENV PYTHONPATH=/app
 ENV DATA_PATH=/app/data
 ENV MAX_STEPS=8
-ENV PORT=8000
+ENV PORT=7860
 ENV PYTHONUNBUFFERED=1
 
 # ------------------------------------------------------------------
@@ -64,6 +64,6 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 # ------------------------------------------------------------------
 # Start the server
 # ------------------------------------------------------------------
-EXPOSE 8000
+EXPOSE 7860
 
 CMD ["sh", "-c", "exec uvicorn server.app:app --host 0.0.0.0 --port ${PORT} --workers 1 --timeout-keep-alive 75"]
