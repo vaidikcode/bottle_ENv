@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 from openenv.core.env_server.interfaces import Environment
+from openenv.core.env_server.types import EnvironmentMetadata
 
 from .models import ClinicalAction, ClinicalObservation, ClinicalState
 from .sandbox import ExecutionResult, run_code, run_code_with_preamble
@@ -206,6 +207,22 @@ class ClinicalBenchEnvironment(Environment[ClinicalAction, ClinicalObservation, 
                 "consecutive_errors": self._consecutive_errors,
                 "total_reward": self._total_reward,
             },
+        )
+
+    def get_metadata(self) -> EnvironmentMetadata:
+        """Return rich metadata about this environment."""
+        return EnvironmentMetadata(
+            name="ClinicalBench",
+            description=(
+                "A medical code-generation environment where an AI agent writes Python "
+                "code to solve biomedical computation problems across three tasks of "
+                "increasing difficulty: clinical calculators (easy), biostatistical "
+                "power analysis (medium), and bioinformatics function implementation (hard). "
+                "Problems are drawn from real clinical case reports and research datasets."
+            ),
+            version="1.0.0",
+            author="ClinicalBench Contributors",
+            documentation_url="https://huggingface.co/spaces/p1yush-exe/BottleMedENV",
         )
 
     @property

@@ -2,17 +2,18 @@
 FastAPI application entry point for the ClinicalBench OpenEnv server.
 
 Start with:
-    uvicorn server.app:app --host 0.0.0.0 --port 8080
+    uvicorn server.app:app --host 0.0.0.0 --port 7860
 """
 
 import os
 from pathlib import Path
 
 from openenv.core.env_server.http_server import create_app
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.routing import APIRoute
 from fastapi.staticfiles import StaticFiles
 
-from .models import ClinicalAction, ClinicalObservation
+from .models import ClinicalAction, ClinicalObservation, ClinicalState
 from .environment import ClinicalBenchEnvironment, DATA_PATH
 from .ai_routes import router as ai_router
 
@@ -31,6 +32,18 @@ app = create_app(
 )
 
 app.include_router(ai_router)
+
+# Override /schema to expose ClinicalState schema instead of the base State class.
+# The framework hardcodes State.model_json_schema() — we insert our route first
+# so FastAPI matches it before the framework's version (first-match wins).
+async def _clinical_schema():
+    return JSONResponse({
+        "action": ClinicalAction.model_json_schema(),
+        "observation": ClinicalObservation.model_json_schema(),
+        "state": ClinicalState.model_json_schema(),
+    })
+
+app.router.routes.insert(0, APIRoute("/schema", _clinical_schema, methods=["GET"]))
 
 _FRONTEND_DIST = Path("/app/frontend/dist")
 if not _FRONTEND_DIST.exists():
