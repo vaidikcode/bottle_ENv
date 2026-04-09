@@ -1,0 +1,1028 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+:root {
+  color: #ffffff;
+  background: #06252e;
+  font-family: Gilroy, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+  text-shadow: inherit;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+    radial-gradient(circle at top right, rgba(4, 146, 189, 0.1), transparent 34%),
+    radial-gradient(circle at center, rgba(4, 146, 189, 0.08), transparent 52%),
+    linear-gradient(180deg, rgba(6, 37, 46, 1) 0%, #06252e 100%);
+  color: #ffffff;
+  text-shadow:
+    0 0 2px rgba(255, 255, 255, 0.24),
+    0 0 4px rgba(4, 146, 189, 0.34),
+    0 0 8px rgba(4, 146, 189, 0.18);
+  overflow-x: hidden;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+input,
+select,
+textarea,
+.panel,
+.taskCard,
+.statCard,
+.timelineItem,
+.statusPill {
+  border-radius: 8px;
+}
+
+button,
+select,
+input,
+textarea {
+  border: 1px solid rgba(4, 146, 189, 0.28);
+  background: rgba(4, 20, 28, 0.96);
+  color: #ffffff;
+}
+
+button {
+  cursor: pointer;
+  font-weight: 700;
+  padding: 0.8rem 1rem;
+  font-family: "Press Start 2P", monospace;
+  transition:
+    border-color 0.14s ease,
+    box-shadow 0.14s ease,
+    color 0.14s ease;
+}
+
+button:hover:not(:disabled) {
+  border-color: #0492bd;
+  box-shadow: 0 0 12px rgba(4, 146, 189, 0.3);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+select,
+input {
+  min-height: 44px;
+  padding: 0.75rem 0.85rem;
+  width: 100%;
+}
+
+textarea {
+  width: 100%;
+}
+
+.appShell {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 100%;
+  padding: 1rem;
+}
+
+.topBar,
+.panel,
+.taskCard,
+.statCard,
+.timelineItem {
+  background: rgba(4, 14, 20, 0.88);
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 0.25rem 0.85rem;
+  background: transparent;
+}
+
+.productCopy {
+  min-width: 0;
+  color: #ffffff;
+}
+
+.productCopy h1 {
+  color: #ffffff;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+button,
+.statusPill,
+.eyebrow,
+.taskLabel,
+.taskMeta,
+.statLabel,
+.blockLabel {
+  font-family: Gilroy, Arial, sans-serif;
+  text-shadow:
+    0 0 2px rgba(255, 255, 255, 0.34),
+    0 0 6px rgba(4, 146, 189, 0.42),
+    0 0 10px rgba(4, 146, 189, 0.2);
+}
+
+h1 {
+  max-width: 900px;
+  font-family: "Press Start 2P", monospace;
+  font-size: 1.7rem;
+  line-height: 1.05;
+  color: rgba(223, 247, 255, 0.96);
+  letter-spacing: 0.03em;
+  text-shadow:
+    0 0 2px rgba(255, 255, 255, 0.44),
+    0 0 6px rgba(4, 146, 189, 0.5),
+    0 0 11px rgba(4, 146, 189, 0.3),
+    0 0 15px rgba(4, 146, 189, 0.18);
+}
+
+h2 {
+  font-size: 0.95rem;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.topBarActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 44px;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid rgba(4, 146, 189, 0.28);
+  background: rgba(4, 14, 20, 0.88);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+}
+
+.statusPill span {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.statusPill.connecting span {
+  background: rgba(4, 146, 189, 0.6);
+}
+
+.statusPill.connected span {
+  background: #0492bd;
+}
+
+.statusPill.connected {
+  color: #ffffff;
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(280px, 1fr);
+  gap: 1rem;
+  flex: 1;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.panel {
+  padding: 1rem;
+  border: 1px solid rgba(4, 146, 189, 0.2);
+}
+
+.problemTextFormatted {
+  margin-top: 1rem;
+}
+
+.probSection {
+  margin-bottom: 0.5rem;
+}
+
+.probSectionHeaderRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.2rem;
+}
+
+button.probSectionHeader {
+  background: transparent;
+  border: none;
+  color: #ffb86c;
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.65rem;
+  padding: 0.5rem 0.5rem 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: none;
+}
+
+.probSectionHint {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.75rem;
+  color: rgba(255, 157, 59, 0.6);
+  margin-left: 0.2rem;
+}
+
+.probSectionArrow {
+  color: rgba(255, 157, 59, 0.8);
+}
+
+.probSectionContent {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.9rem;
+  color: rgba(220, 240, 255, 0.95);
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 1rem;
+  border-radius: 4px;
+  margin: 0.5rem 0 1.5rem 0;
+  border-left: 2px solid rgba(4, 146, 189, 0.4);
+}
+
+.editorPanel {
+  flex: 1;
+  min-height: 0;
+}
+
+.blackTerminalWindow {
+  background: #000;
+  border-radius: 4px;
+  padding: 1.2rem;
+  min-height: 320px;
+  max-height: calc(100vh - 420px);
+  overflow: auto;
+  border: 1px solid rgba(4, 146, 189, 0.25);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.retroTerminalLine {
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.65rem;
+  line-height: 1.8;
+  color: #0492bd;
+  text-shadow: 0 0 5px rgba(4, 146, 189, 0.4);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.statCard strong,
+.rewardValue {
+  font-size: 0.9rem;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.rewardValue.strong {
+  color: #0492bd;
+}
+
+.rewardValue.good {
+  color: rgba(4, 146, 189, 0.85);
+}
+
+.rewardValue.weak {
+  color: rgba(4, 146, 189, 0.55);
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.85rem;
+}
+
+.rewardValue.bad {
+  color: rgba(255, 60, 60, 0.85);
+  font-family: "Press Start 2P", monospace;
+}
+
+.rewardValue.neutral {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.statList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 0 0.5rem;
+}
+
+.statListRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.retroFontWhite {
+  font-family: "Courier New", Courier, monospace;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.85rem;
+  text-transform: none;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.12);
+}
+
+.scorePanel .retroFontWhite,
+.scorePanel .rewardValue,
+.scorePanel .feedbackValue {
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.62rem;
+  line-height: 1.6;
+  letter-spacing: 0.03em;
+}
+
+.scorePanel .statListRow {
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.scorePanel .retroHeadingBar {
+  margin-bottom: 0.9rem;
+}
+
+.feedbackValue {
+  display: inline-block;
+  text-align: right;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  max-width: 62%;
+}
+
+.expandableContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.retroToggle {
+  width: 100%;
+  text-align: center;
+  padding: 0.85rem 1rem;
+}
+
+.expandableContent {
+  margin-top: 0.2rem;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.timelineList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+button.historyItemBtn {
+  background: rgba(4, 14, 20, 0.6);
+  border: 1px solid rgba(4, 146, 189, 0.15);
+  border-radius: 4px;
+  width: 100%;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.2rem;
+  transition: none;
+}
+
+button.historyItemBtn.active {
+  background: rgba(4, 146, 189, 0.15);
+  border-color: #0492bd;
+  box-shadow: 0 0 8px rgba(4, 146, 189, 0.22);
+  transition: none;
+}
+
+button.probSectionHeader.historyItemBtn:hover {
+  box-shadow: 0 0 8px rgba(52, 154, 186, 0.22);
+}
+
+button.probSectionHeader.historyItemBtn.active:hover {
+  box-shadow: 0 0 8px rgba(4, 146, 189, 0.2);
+}
+
+button.historyItemBtn.active .probSectionTitleText {
+  color: #e0f7ff;
+}
+
+.emptyState {
+  color: rgba(255, 255, 255, 0.4);
+  font-family: Gilroy, Arial, sans-serif;
+  padding: 0.5rem;
+}
+
+.errorBanner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(4, 146, 189, 0.4);
+  border-radius: 8px;
+  background: rgba(4, 146, 189, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.94rem;
+}
+
+.crtTvViewport {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.crtTvViewport::before {
+  content: "";
+  position: fixed;
+  inset: -1.25%;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse at center, transparent 54%, rgba(0, 0, 0, 0.14) 72%, rgba(0, 0, 0, 0.34) 100%);
+  transform: scaleX(1.018) scaleY(1.04);
+  opacity: 0.92;
+}
+
+.crtTvViewport::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(4, 146, 189, 0.08), transparent 44%),
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.04), transparent 28%);
+  mix-blend-mode: screen;
+  opacity: 0.8;
+}
+
+.crtTvGlass,
+.crtTvBloom,
+.crtTvScanlines,
+.crtTvRgbShift,
+.crtTvVignette,
+.crtTvReflection,
+.crtTvFlicker {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.crtTvGlass {
+  position: fixed;
+  background:
+    radial-gradient(ellipse at 50% 2%, rgba(255, 255, 255, 0.08), transparent 24%),
+    radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, 0.16), transparent 40%);
+  z-index: 1;
+  opacity: 0.9;
+}
+
+.crtTvBloom {
+  position: fixed;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(4, 146, 189, 0.18), transparent 46%),
+    radial-gradient(circle at 20% 16%, rgba(255, 255, 255, 0.06), transparent 18%),
+    radial-gradient(circle at 82% 24%, rgba(4, 146, 189, 0.08), transparent 22%);
+  mix-blend-mode: screen;
+  z-index: 1;
+  opacity: 0.95;
+}
+
+.crtTvScanlines {
+  position: fixed;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.18) 0rem,
+    rgba(0, 0, 0, 0.18) 0.16rem,
+    transparent 0.16rem,
+    transparent 0.34rem
+  );
+  z-index: 2;
+  opacity: 0.8;
+  animation: scanline-dark 83.33ms steps(2, end) infinite;
+}
+
+.crtTvScanlines::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(4, 146, 189, 0.07) 0rem,
+    rgba(4, 146, 189, 0.07) 0.16rem,
+    transparent 0.16rem,
+    transparent 0.34rem
+  );
+  background-position-y: 0.16rem;
+  animation: scanline-color 83.33ms steps(2, end) infinite;
+  animation-delay: 2ms;
+}
+
+.crtTvRgbShift {
+  position: fixed;
+  background: linear-gradient(90deg, rgba(255, 0, 0, 0.02), transparent 18%, transparent 82%, rgba(0, 255, 255, 0.02));
+  mix-blend-mode: screen;
+  z-index: 2;
+  opacity: 0.55;
+}
+
+.crtTvVignette {
+  position: fixed;
+  background: radial-gradient(ellipse at center, transparent 48%, rgba(0, 0, 0, 0.24) 70%, rgba(0, 0, 0, 0.58) 100%);
+  z-index: 3;
+}
+
+.crtTvReflection {
+  position: fixed;
+  background:
+    linear-gradient(110deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 13%, transparent 24%),
+    linear-gradient(250deg, rgba(255, 255, 255, 0.04) 0%, transparent 18%);
+  z-index: 3;
+  opacity: 0.5;
+}
+
+.crtTvFlicker {
+  position: fixed;
+  background: rgba(255, 255, 255, 0.024);
+  z-index: 4;
+  opacity: 0;
+  animation: crt-flicker-anim 0.17s infinite;
+}
+
+.crtTvContent {
+  position: relative;
+  z-index: 0;
+  min-height: 100vh;
+}
+
+@keyframes scanline-dark {
+  0% {
+    background-position-y: 0rem;
+  }
+
+  50% {
+    background-position-y: 0.16rem;
+  }
+
+  100% {
+    background-position-y: 0.34rem;
+  }
+}
+
+@keyframes scanline-color {
+  0% {
+    background-position-y: 0.16rem;
+  }
+
+  50% {
+    background-position-y: 0rem;
+  }
+
+  100% {
+    background-position-y: -0.16rem;
+  }
+}
+
+@keyframes crt-flicker-anim {
+  0% {
+    opacity: 0.012;
+  }
+
+  20% {
+    opacity: 0.036;
+  }
+
+  40% {
+    opacity: 0.014;
+  }
+
+  60% {
+    opacity: 0.048;
+  }
+
+  80% {
+    opacity: 0.018;
+  }
+
+  100% {
+    opacity: 0.03;
+  }
+}
+
+.introScreen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  transition:
+    transform 0.52s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.52s ease;
+}
+
+.introScreen.leaving {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.introInner {
+  width: min(560px, 88vw);
+  display: flex;
+  flex-direction: column;
+}
+
+.introDifficultyPanel {
+  padding: 1rem;
+}
+
+.titlePrompt {
+  width: 100%;
+  font-size: clamp(1.35rem, 3.2vw, 1.9rem) !important;
+  color: #fff2e0;
+  margin: 0 0 2.5rem;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-shadow:
+    0 0 5px rgba(255, 157, 59, 0.8),
+    0 0 15px rgba(255, 157, 59, 0.6),
+    0 0 25px rgba(255, 157, 59, 0.4);
+  letter-spacing: 0.04em;
+}
+
+.termCursor {
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+
+.termCursor.on {
+  opacity: 1;
+}
+
+.taskSelectList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.taskSelectRow {
+  border: none;
+  transition: background 0.15s;
+  border-radius: 0;
+}
+
+.taskSelectRow.open {
+  border-color: transparent;
+  box-shadow: none;
+  background: transparent;
+}
+
+button.taskSelectBtn {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.55rem 0.35rem;
+  background: transparent;
+  color: #fff;
+  border: none;
+  text-align: left;
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.82rem;
+  transition: color 0.12s;
+}
+
+button.taskSelectBtn:hover {
+  box-shadow: none;
+  border: none;
+  background: transparent;
+  color: rgba(224, 247, 255, 0.92);
+}
+
+.tsChevron {
+  color: rgba(224, 247, 255, 0.85);
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.82rem;
+}
+
+.tsDiff {
+  font-family: "Press Start 2P", monospace;
+  color: rgba(224, 247, 255, 0.75);
+  font-size: 0.82rem;
+  display: inline-block;
+  text-shadow:
+    0 0 6px rgba(4, 146, 189, 0.9),
+    0 0 12px rgba(4, 146, 189, 0.6);
+}
+
+button.taskSelectBtn.active .tsDiff {
+  color: #f1fbff;
+  letter-spacing: 0.05em;
+}
+
+button.taskSelectBtn.active {
+  color: #f1fbff;
+  text-shadow: 0 0 8px rgba(143, 227, 255, 0.45);
+}
+
+.tsDot {
+  color: rgba(4, 146, 189, 0.85);
+  font-size: 0.82rem;
+}
+
+.tsLabel {
+  color: rgba(224, 247, 255, 0.92);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+
+button.taskSelectBtn.active .tsLabel,
+button.taskSelectBtn.active .tsChevron,
+button.taskSelectBtn.active .tsDot {
+  color: #f1fbff;
+}
+
+.tsDesc {
+  margin: 0;
+  padding: 0.08rem 0.35rem 0.45rem 1.95rem;
+  color: rgba(232, 249, 255, 0.86);
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.9rem;
+  border-top: none;
+  background: transparent;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.startBtnWrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.2rem;
+}
+
+.introDifficultyPanel .startBtnWrap {
+  margin-top: 1.2rem;
+}
+
+.introStartBtn {
+  width: 100%;
+}
+
+button.pixelStartBtn {
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.78rem;
+  color: #fff;
+  background: #0492bd;
+  border: 3px solid #000;
+  border-radius: 10px;
+  padding: 0.7rem 2.4rem;
+  letter-spacing: 0.06em;
+  box-shadow:
+    0 5px 0 #000,
+    inset 0 3px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.28);
+  text-shadow:
+    2px 2px 0 rgba(0, 0, 0, 0.55),
+    0 0 10px rgba(255, 255, 255, 0.3);
+  transition: box-shadow 0.1s;
+  image-rendering: pixelated;
+}
+
+.uiActionBtn {
+  min-width: 180px;
+  justify-content: center;
+}
+
+button.pixelStartBtn:hover {
+  box-shadow:
+    0 5px 0 #000,
+    inset 0 3px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.28),
+    0 0 15px rgba(4, 146, 189, 0.6);
+}
+
+button.pixelStartBtn:active {
+  box-shadow:
+    0 3px 0 #000,
+    inset 0 3px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.28);
+}
+
+.pauseBtn {
+  min-width: 150px;
+}
+
+.pauseOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(3px);
+  animation: pauseOverlayIn 0.15s ease forwards;
+}
+
+@keyframes pauseOverlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.pauseMenu {
+  background: #050d12;
+  border: 4px solid #0492bd;
+  box-shadow:
+    0 0 0 2px #000,
+    0 0 0 5px #0492bd,
+    0 0 0 7px #000,
+    0 0 40px rgba(4, 146, 189, 0.35),
+    inset 0 0 30px rgba(4, 146, 189, 0.04);
+  padding: 2.4rem 2.8rem 2.2rem;
+  min-width: 300px;
+  animation: pauseMenuIn 0.18s ease forwards;
+}
+
+@keyframes pauseMenuIn {
+  from {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.pauseTitle {
+  font-family: "Press Start 2P", monospace;
+  font-size: 1rem;
+  color: rgba(232, 248, 255, 0.96);
+  text-align: center;
+  margin-bottom: 2rem;
+  letter-spacing: 0.08em;
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.18),
+    0 0 12px rgba(4, 146, 189, 0.22);
+}
+
+.pauseItems {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pauseItem {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding-inline: 1rem;
+}
+
+.pauseItem--exit {
+  margin-top: 0.5rem;
+}
+
+.retroPanel {
+  border: 1px solid rgba(164, 228, 247, 0.22);
+  background: linear-gradient(180deg, rgba(10, 26, 34, 0.96), rgba(4, 13, 19, 0.96));
+  box-shadow:
+    0 0 0 1px rgba(4, 146, 189, 0.18),
+    inset 0 0 0 1px rgba(205, 245, 255, 0.04),
+    0 0 18px rgba(4, 146, 189, 0.08);
+}
+
+.retroHeadingBar {
+  margin-bottom: 0.5rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.retroHeadingText {
+  font-family: "Press Start 2P", monospace;
+  font-size: 1rem;
+  color: #ff9d3b;
+  text-shadow:
+    0 0 5px rgba(255, 157, 59, 0.24),
+    0 0 12px rgba(255, 157, 59, 0.14);
+}
+
+.stepStatePanel {
+  padding: 1rem;
+}
+
+.stepStateRow {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+}
+
+.stepStateCol {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stepStateHeading {
+  font-size: 1rem;
+}
+
+.stepStateValue {
+  font-family: "Arial Black", Impact, sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  color: #ffffff;
+  text-transform: uppercase;
+  text-shadow:
+    -2px 0 0 rgba(4, 146, 189, 0.9),
+    2px 0 0 rgba(255, 255, 255, 0.4);
+}
+
+@media (max-width: 1040px) {
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .topBar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .topBarActions {
+    justify-content: flex-start;
+  }
+
+  .stepStateRow {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .feedbackValue {
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .statListRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

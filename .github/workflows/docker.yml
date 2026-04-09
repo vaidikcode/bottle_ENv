@@ -1,0 +1,18 @@
+# Automated Docker build — verifies the image builds from a clean clone
+# (typical for OpenEnv / registry submissions that CI the submitted repo).
+name: Docker build
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image (repo root context)
+        run: docker build -f clinical_bench/Dockerfile -t clinical-bench:ci .
