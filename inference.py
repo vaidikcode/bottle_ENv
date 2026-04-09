@@ -5,7 +5,10 @@ import textwrap
 from dataclasses import dataclass
 from typing import List, Optional
 
+from dotenv import load_dotenv
 from openai import OpenAI
+
+load_dotenv()  # load .env if present; already-set env vars take precedence
 
 from my_env_v4 import MyEnvV4Action, MyEnvV4Env
 
