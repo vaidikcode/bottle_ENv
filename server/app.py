@@ -49,7 +49,16 @@ def _root():
     """Serve the frontend in Docker; return service metadata in local dev without a build."""
     index_path = _FRONTEND_DIST / "index.html"
     if index_path.exists():
-        return FileResponse(index_path)
+        return FileResponse(
+            index_path,
+            headers={
+                # index.html must never be cached — it references content-hashed
+                # assets (/assets/index-<hash>.js) so an old cached index.html
+                # would silently load stale bundles after a redeploy.
+                "Cache-Control": "no-store, no-cache, must-revalidate",
+                "Pragma": "no-cache",
+            },
+        )
 
     return {
         "service": "clinical_bench",
