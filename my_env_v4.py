@@ -53,7 +53,8 @@ class MyEnvV4Env:
     @classmethod
     async def create(cls, task_name: str, image_name: Optional[str] = None) -> "MyEnvV4Env":
         """Create an env using OPENENV_BASE_URL / ENV_BASE_URL / BASE_URL, falling back to the HF Space."""
-        env_url = os.getenv("OPENENV_BASE_URL") or os.getenv("ENV_BASE_URL") or os.getenv("BASE_URL")
+        _DEFAULT_SPACE_URL = "https://p1yush-exe-bottlemedenv.hf.space"
+        env_url = os.getenv("OPENENV_BASE_URL") or os.getenv("ENV_BASE_URL") or os.getenv("BASE_URL") or _DEFAULT_SPACE_URL
         space_id = os.getenv("HF_SPACE_ID") or os.getenv("SPACE_ID")
 
         if env_url:

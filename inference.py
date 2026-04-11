@@ -5,7 +5,11 @@ import textwrap
 from dataclasses import dataclass
 from typing import List, Optional
 
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    def load_dotenv(*a, **kw): pass
+
 from openai import OpenAI
 
 load_dotenv()  # load .env if present; already-set env vars take precedence
@@ -17,7 +21,6 @@ API_KEY = os.getenv("HF_TOKEN") or os.getenv("API_KEY")
 API_BASE_URL = os.getenv("API_BASE_URL") or "https://router.huggingface.co/v1"
 MODEL_NAME = os.getenv("MODEL_NAME") or "Qwen/Qwen2.5-72B-Instruct"
 BENCHMARK = os.getenv("MY_ENV_V4_BENCHMARK", "clinical_bench")
-# One episode per run (validator-friendly). Set RUN_ALL_TASKS=1 to loop all three locally.
 TASK_NAME = os.getenv("MY_ENV_V4_TASK", "clinical_calc")
 TASKS_ALL = ("clinical_calc", "biostat_power", "biocoder")
 MAX_STEPS = int(os.getenv("MAX_STEPS", "8"))
