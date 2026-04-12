@@ -12,7 +12,8 @@ except ImportError:
 
 from openai import OpenAI
 
-load_dotenv()  # load .env if present; already-set env vars take precedence
+# Never override host-injected API_* (hackathon / CI). HF Space secrets are not visible here.
+load_dotenv(override=False)
 
 from my_env_v4 import MyEnvV4Action, MyEnvV4Env
 
@@ -182,7 +183,14 @@ async def run_task(client: OpenAI, task_name: str, benchmark: str) -> None:
 
 
 async def main() -> None:
-    client = OpenAI(base_url=API_BASE_URL, api_key=API_KEY or "unset")
+    # LiteLLM / hackathon: must use injected vars exactly when both are set.
+    if os.getenv("API_BASE_URL", "").strip() and os.getenv("API_KEY", "").strip():
+        client = OpenAI(
+            base_url=os.environ["API_BASE_URL"].strip(),
+            api_key=os.environ["API_KEY"].strip(),
+        )
+    else:
+        client = OpenAI(base_url=API_BASE_URL, api_key=API_KEY or "unset")
 
     for name in TASKS_ALL:
         try:
