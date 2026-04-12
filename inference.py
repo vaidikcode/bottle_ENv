@@ -18,9 +18,13 @@ load_dotenv(override=False)
 from my_env_v4 import MyEnvV4Action, MyEnvV4Env
 
 IMAGE_NAME = os.getenv("IMAGE_NAME") or os.getenv("LOCAL_IMAGE_NAME")
-# Hackathon / LiteLLM: use API_KEY + API_BASE_URL when injected (do not prefer HF_TOKEN).
-API_KEY = os.getenv("API_KEY") or os.getenv("HF_TOKEN")
-API_BASE_URL = os.getenv("API_BASE_URL") or "https://router.huggingface.co/v1"
+# Match hackathon sample: read proxy vars from os.environ when both are injected.
+if "API_BASE_URL" in os.environ and "API_KEY" in os.environ:
+    API_BASE_URL = os.environ["API_BASE_URL"]
+    API_KEY = os.environ["API_KEY"]
+else:
+    API_BASE_URL = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
+    API_KEY = os.getenv("API_KEY") or os.getenv("HF_TOKEN") or "unset"
 MODEL_NAME = os.getenv("MODEL_NAME") or "Qwen/Qwen2.5-72B-Instruct"
 BENCHMARK = os.getenv("MY_ENV_V4_BENCHMARK", "clinical_bench")
 TASK_NAME = os.getenv("MY_ENV_V4_TASK", "clinical_calc")
@@ -182,15 +186,24 @@ async def run_task(client: OpenAI, task_name: str, benchmark: str) -> None:
         log_end(success=success, steps=steps_taken, score=score, rewards=rewards)
 
 
-async def main() -> None:
-    # LiteLLM / hackathon: must use injected vars exactly when both are set.
-    if os.getenv("API_BASE_URL", "").strip() and os.getenv("API_KEY", "").strip():
-        client = OpenAI(
-            base_url=os.environ["API_BASE_URL"].strip(),
-            api_key=os.environ["API_KEY"].strip(),
+def _llm_warmup(client: OpenAI) -> None:
+    """One completion so LiteLLM sees traffic even if env setup fails before the loop."""
+    try:
+        client.chat.completions.create(
+            model=MODEL_NAME,
+            messages=[{"role": "user", "content": "."}],
+            max_tokens=1,
+            temperature=0.0,
         )
-    else:
-        client = OpenAI(base_url=API_BASE_URL, api_key=API_KEY or "unset")
+    except Exception as exc:
+        print(f"[DEBUG] LLM warmup: {exc}", flush=True)
+
+
+async def main() -> None:
+    # Same pattern as official sample: OpenAI(base_url=API_BASE_URL, api_key=API_KEY)
+    client = OpenAI(base_url=API_BASE_URL, api_key=API_KEY)
+    if "API_BASE_URL" in os.environ and "API_KEY" in os.environ:
+        _llm_warmup(client)
 
     for name in TASKS_ALL:
         try:
