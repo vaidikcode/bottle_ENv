@@ -138,7 +138,7 @@ async def run_task(client: OpenAI, task_name: str, benchmark: str) -> None:
     history: List[AttemptRecord] = []
     steps_taken = 0
     success = False
-    score = 0.0
+    score = 0.001
 
     log_start(task=task_name, env=benchmark, model=MODEL_NAME)
 
@@ -168,7 +168,8 @@ async def run_task(client: OpenAI, task_name: str, benchmark: str) -> None:
                 break
 
         if rewards:
-            score = min(max(sum(rewards) / len(rewards), 0.0), 1.0)
+            raw = sum(rewards) / len(rewards)
+            score = min(max(raw, 0.001), 0.999)
         success = bool(rewards) and rewards[-1] >= 1.0
     finally:
         if env is not None:
@@ -180,15 +181,13 @@ async def run_task(client: OpenAI, task_name: str, benchmark: str) -> None:
 
 
 async def main() -> None:
-    # Do not raise if HF_TOKEN is missing: the hackathon runner may inject it only for
-    # some phases; model calls already fall back in get_model_code. OpenAI client needs a string.
     client = OpenAI(base_url=API_BASE_URL, api_key=API_KEY or "unset")
 
-    if os.getenv("RUN_ALL_TASKS", "").lower() in {"1", "true", "yes"}:
-        for name in TASKS_ALL:
+    for name in TASKS_ALL:
+        try:
             await run_task(client, name, BENCHMARK)
-    else:
-        await run_task(client, TASK_NAME, BENCHMARK)
+        except Exception as exc:
+            print(f"[ERROR] Task {name} failed: {exc}", flush=True)
 
 
 if __name__ == "__main__":
